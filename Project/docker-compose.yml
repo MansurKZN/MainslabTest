@@ -1,0 +1,28 @@
+version: '3.3'
+
+volumes:
+  pgdata-project:
+
+services:
+  postgres:
+    image: postgres:10
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=qwerty007
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=table
+    volumes:
+      - pgdata-project:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  web:
+    container_name: table-app
+    build: ../Project/
+    restart: always
+    env_file:
+      - ../Project/envs/.env
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
